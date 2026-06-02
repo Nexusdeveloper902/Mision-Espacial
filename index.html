@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión Espacial — Desafío de Física</title>
+    <!-- Google Fonts: Orbitron & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Starfields background -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    <div class="nebula"></div>
+
+    <!-- MAIN MENU SCREEN -->
+    <section id="main-menu" class="screen active">
+        <div class="menu-container">
+            <div class="logo-container">
+                <span class="logo-deco">▲</span>
+                <h1 class="game-title">MISIÓN ESPACIAL</h1>
+                <span class="logo-deco">▲</span>
+            </div>
+            <p class="subtitle">DESAFÍO INTERACTIVO DE FÍSICA</p>
+            
+            <div class="narrative-box">
+                <p class="narrative-text">
+                    La nave científica <span class="highlight">Astraea</span> ha quedado a la deriva cerca de un cinturón de asteroides por una falla del sistema central. 
+                    Las esclusas automáticas están bloqueadas y los motores warp están desconfigurados.
+                </p>
+                <p class="narrative-text warning-text">
+                    Para reactivar la nave, debes calibrar los sensores utilizando **principios reales de física espacial**. 
+                    Interactúa directamente con los simuladores en tiempo real, resuelve los desafíos mecánicos y salva a la tripulación.
+                </p>
+            </div>
+
+            <button id="btn-start" class="btn-primary glow-btn">
+                <span>INICIAR SIMULACIÓN CIENTÍFICA</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- CORE GAME SCREEN (SINGLE SCREEN SCIENTIFIC CONSOLE) -->
+    <main id="game-screen" class="screen">
+        <div class="console-wrapper glass-panel">
+            
+            <!-- CONSOLE HEADER -->
+            <header class="console-header">
+                <div class="console-title">
+                    <span class="pulse-indicator">●</span> CONSÓLA CIENTÍFICA ASTRAEA v3.5
+                </div>
+                <div class="console-step-indicator">
+                    MÓDULO: <span id="module-step-text" class="highlight">1 / 4</span>
+                </div>
+                <div class="console-actions">
+                    <button id="btn-audio-toggle" class="hud-btn">🔊 SONIDO</button>
+                    <button id="btn-restart" class="hud-btn btn-danger-text">REINICIAR</button>
+                </div>
+            </header>
+
+            <!-- CONSOLE MAIN SPLIT LAYOUT -->
+            <div class="console-body">
+                
+                <!-- LEFT PANEL: THEORY & QUESTION BOARD -->
+                <section class="console-panel left-panel">
+                    <div class="panel-section-title">SENSOR DE NAVEGACIÓN Y DATOS</div>
+                    
+                    <!-- DYNAMIC MODULE TITLE -->
+                    <h2 id="module-title" class="module-title">Desafío 1: Gravedad y Órbitas</h2>
+                    
+                    <!-- THEORETICAL INFO CARD -->
+                    <div class="info-card">
+                        <h4 class="card-subtitle">CONCEPTO FÍSICO</h4>
+                        <p id="theory-text" class="theory-text">
+                            La Fuerza Gravitacional (<i>F</i>) entre dos masas es proporcional al producto de sus masas y disminuye de forma cuadrática con la distancia (<i>r</i>) que las separa según Newton: <span class="highlight"><i>F = G · (m<sub>1</sub>·m<sub>2</sub>) / r<sup>2</sup></i></span>.
+                        </p>
+                    </div>
+
+                    <!-- QUESTION BOX -->
+                    <div class="question-card">
+                        <h4 class="card-subtitle danger-text">MISIÓN DE REPARACIÓN</h4>
+                        <p id="question-text" class="question-text">
+                            El satélite de comunicaciones se está alejando. Ajusta los controles de Masa y Radio de órbita en la simulación hasta que alcances exactamente una <strong>Fuerza Gravitacional de 2.00x</strong> para anclarlo en una órbita estable.
+                        </p>
+                    </div>
+
+                    <!-- INTERACTIVE CONTROLS CONTAINER -->
+                    <div class="controls-card">
+                        <h4 class="card-subtitle">AJUSTE DE PARÁMETROS</h4>
+                        
+                        <!-- SLIDERS RENDERED DYNAMICALLY DEPENDING ON MODULE -->
+                        <div id="sliders-container" class="sliders-container">
+                            <!-- Slider 1 -->
+                            <div class="slider-group" id="group-param-1">
+                                <label for="param-1" class="slider-label" id="label-param-1">Masa del Planeta (M): 1.0x</label>
+                                <input type="range" id="param-1" class="glow-slider" min="0.5" max="3.0" step="0.1" value="1.0">
+                            </div>
+                            
+                            <!-- Slider 2 -->
+                            <div class="slider-group" id="group-param-2">
+                                <label for="param-2" class="slider-label" id="label-param-2">Radio de Órbita (r): 1.0x</label>
+                                <input type="range" id="param-2" class="glow-slider" min="0.5" max="2.0" step="0.1" value="1.0">
+                            </div>
+                        </div>
+
+                        <!-- Kepler-only Point selection options -->
+                        <div id="kepler-points-selector" class="points-selector-container hidden">
+                            <p class="selector-hint">Observa el planeta orbitando al Sol en el simulador. Selecciona el punto de la trayectoria orbital donde la velocidad lineal de la nave es **máxima**:</p>
+                            <div class="points-grid">
+                                <button class="point-btn" data-point="afelio">AFELIO (Punto más lejano)</button>
+                                <button class="point-btn" data-point="perihelio">PERIHELIO (Punto más cercano)</button>
+                                <button class="point-btn" data-point="medio">PUNTO MEDIO DE LA ÓRBITA</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="action-card">
+                        <button id="btn-submit-answer" class="btn-primary">
+                            <span>PROBAR TEORÍA Y ENVIAR</span>
+                        </button>
+                        <div id="simulation-feedback" class="feedback-text text-danger-neon">INICIALIZANDO SENSORES...</div>
+                    </div>
+                </section>
+
+                <!-- RIGHT PANEL: DYNAMIC LIVE SIMULATION CANVAS -->
+                <section class="console-panel right-panel">
+                    <div class="panel-section-title">SIMULADOR FÍSICO EN TIEMPO REAL</div>
+                    
+                    <div class="simulation-viewport">
+                        
+                        <!-- SIMULATOR 1: GRAVITY NEWTONIAN -->
+                        <div id="sim-gravity" class="sim-wrapper">
+                            <svg viewBox="0 0 500 400" class="sim-svg">
+                                <!-- Solar star center -->
+                                <circle cx="250" cy="200" r="40" fill="url(#planet-glow)" id="sim1-planet" />
+                                
+                                <!-- Orbit path line -->
+                                <circle cx="250" cy="200" r="100" fill="none" stroke="rgba(0, 255, 255, 0.15)" stroke-width="1.5" stroke-dasharray="4 4" id="sim1-orbit-line" />
+                                
+                                <!-- Satellite orbiting -->
+                                <circle cx="350" cy="200" r="12" fill="#00d2ff" stroke="#fff" stroke-width="1.5" id="sim1-satellite" />
+                                
+                                <!-- Force vector arrow pointing from satellite to planet -->
+                                <g id="sim1-vector-group">
+                                    <line x1="350" y1="200" x2="290" y2="200" stroke="#39ff14" stroke-width="4.5" stroke-linecap="round" id="sim1-vector-line" />
+                                    <!-- Arrow tip -->
+                                    <polygon points="290,200 300,194 300,206" fill="#39ff14" id="sim1-vector-arrow" />
+                                </g>
+
+                                <!-- Text overlays for physics reads -->
+                                <text x="20" y="30" fill="rgba(255,255,255,0.7)" font-size="10" font-family="Orbitron">LEEDER GRAVITACIONAL DE NAVE:</text>
+                                <text x="20" y="52" fill="#39ff14" font-size="15" font-family="Orbitron" font-weight="800" id="sim1-force-readout">Fuerza = 1.00x</text>
+                                <text x="20" y="70" fill="rgba(255,255,255,0.4)" font-size="9" font-family="Outfit" id="sim1-helper-formula">Fuerza Target = 2.00x</text>
+
+                                <defs>
+                                    <radialGradient id="planet-glow" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" stop-color="#fff" />
+                                        <stop offset="40%" stop-color="#ff9f1c" />
+                                        <stop offset="100%" stop-color="#ff9f1c" stop-opacity="0" />
+                                    </radialGradient>
+                                </defs>
+                            </svg>
+                        </div>
+
+                        <!-- SIMULATOR 2: F = MA ACCELERATION -->
+                        <div id="sim-newton" class="sim-wrapper hidden">
+                            <svg viewBox="0 0 500 400" class="sim-svg">
+                                <!-- Asteroid barrier on the right -->
+                                <rect x="420" y="0" width="80" height="400" fill="#161219" opacity="0.6" />
+                                <line x1="420" y1="0" x2="420" y2="400" stroke="#ff3b30" stroke-width="2" stroke-dasharray="6 4" class="alarm-beacon" />
+                                <text x="460" y="200" fill="#ff3b30" font-size="10" font-family="Orbitron" text-anchor="middle" transform="rotate(90 460 200)" class="glow-text-red">BARRERA ASTEROIDES</text>
+
+                                <!-- Target green safety corridor box -->
+                                <rect x="300" y="100" width="80" height="200" fill="rgba(57,255,20,0.06)" stroke="#39ff14" stroke-dasharray="3 3" stroke-width="1.5" />
+                                <text x="340" y="125" fill="#39ff14" font-size="9" font-family="Orbitron" text-anchor="middle">CORREDOR DE DESVÍO</text>
+
+                                <!-- Space Rocket body -->
+                                <g id="sim2-rocket" transform="translate(60, 200)">
+                                    <!-- Rocket flame tail (rendered dynamically) -->
+                                    <polygon points="-25,0 -40,-8 -35,0 -40,8" fill="#ff5500" id="sim2-fire-flame" opacity="0" />
+                                    <rect x="-20" y="-12" width="40" height="24" fill="#21262d" stroke="#8b949e" stroke-width="2" rx="3" />
+                                    <!-- Nose cone -->
+                                    <polygon points="20,-12 38,0 20,12" fill="#8b949e" />
+                                    <!-- Window -->
+                                    <circle cx="5" cy="0" r="5" fill="#00d2ff" />
+                                    <text x="-15" y="-18" fill="rgba(255,255,255,0.7)" font-size="8" font-family="Orbitron" id="sim2-ship-mass-tag">2000 kg</text>
+                                </g>
+
+                                <!-- Path trajectory line drawn -->
+                                <path d="M60,200 L340,200" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" id="sim2-flight-path" />
+
+                                <!-- Sensors panel readout -->
+                                <g transform="translate(20, 30)" font-family="Orbitron">
+                                    <text x="0" y="0" fill="rgba(255,255,255,0.7)" font-size="9">FUERZA DE EMPUJE APLICADA:</text>
+                                    <text x="0" y="18" fill="#00ffff" font-size="14" font-weight="800" id="sim2-thrust-readout">0 N</text>
+                                    <text x="0" y="38" fill="rgba(255,255,255,0.7)" font-size="9">ACELERACIÓN DIRECTA:</text>
+                                    <text x="0" y="56" fill="#00ffff" font-size="14" font-weight="800" id="sim2-accel-readout">0.00 m/s²</text>
+                                    <text x="0" y="74" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Outfit" id="sim2-helper-newton">Aceleración Requerida = 5.00 m/s²</text>
+                                </g>
+
+                                <!-- Button to trigger launch test -->
+                                <foreignObject x="20" y="330" width="160" height="50">
+                                    <button id="btn-sim2-launch" class="btn-primary" style="padding: 8px 16px; font-size: 11px; width: 100%;">SIMULAR IMPULSO</button>
+                                </foreignObject>
+                            </svg>
+                        </div>
+
+                        <!-- SIMULATOR 3: ELECTROMAGNETIC WAVES -->
+                        <div id="sim-waves" class="sim-wrapper hidden">
+                            <!-- Canvas for smooth high-frequency particle waves rendering -->
+                            <canvas id="sim3-canvas" width="480" height="380"></canvas>
+                        </div>
+
+                        <!-- SIMULATOR 4: KEPLER ELLIPTICAL ORBITS -->
+                        <div id="sim-kepler" class="sim-wrapper hidden">
+                            <svg viewBox="0 0 500 400" class="sim-svg">
+                                <!-- Central Sun at focus 1 -->
+                                <circle cx="200" cy="200" r="30" fill="url(#sun-kepler-glow)" />
+                                
+                                <!-- Elliptical orbit line -->
+                                <!-- Center at 250, semi-major a=180, semi-minor b=100 -->
+                                <ellipse cx="250" cy="200" rx="180" ry="100" fill="none" stroke="rgba(189,147,249,0.3)" stroke-width="2" id="sim4-orbit-ellipse" />
+                                
+                                <!-- Star points options on path to click / identify -->
+                                <!-- Perihelio (focus is 200, center is 250. closest vertex on ellipse horizontal is x = 250 - 180 = 70, y = 200) -->
+                                <g class="kepler-interactive-node" id="node-perihelio">
+                                    <circle cx="70" cy="200" r="14" fill="rgba(0,255,255,0.15)" stroke="#00ffff" stroke-dasharray="2 2" stroke-width="1.5" />
+                                    <text x="70" y="224" fill="#00ffff" font-size="9" font-family="Orbitron" text-anchor="middle">PUNTO A</text>
+                                </g>
+
+                                <!-- Afelio (farthest vertex on ellipse horizontal is x = 250 + 180 = 430, y = 200) -->
+                                <g class="kepler-interactive-node" id="node-afelio">
+                                    <circle cx="430" cy="200" r="14" fill="rgba(255,59,48,0.15)" stroke="#ff3b30" stroke-dasharray="2 2" stroke-width="1.5" />
+                                    <text x="430" y="224" fill="#ff3b30" font-size="9" font-family="Orbitron" text-anchor="middle">PUNTO B</text>
+                                </g>
+
+                                <!-- Medium points (top/bottom) -->
+                                <g class="kepler-interactive-node" id="node-medio">
+                                    <circle cx="250" cy="100" r="14" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-dasharray="2 2" stroke-width="1.5" />
+                                    <text x="250" y="85" fill="#fff" font-size="9" font-family="Orbitron" text-anchor="middle">PUNTO C</text>
+                                </g>
+
+                                <!-- Elliptical Spaceship orbiting -->
+                                <g id="sim4-spaceship">
+                                    <circle cx="0" cy="0" r="8" fill="#bd93f9" stroke="#fff" stroke-width="1.5" />
+                                    <!-- Motion speed indicators tail -->
+                                    <line x1="0" y1="0" x2="-20" y2="0" stroke="#bd93f9" stroke-width="3" id="sim4-velocity-vector" />
+                                </g>
+
+                                <!-- Live gauges overlay -->
+                                <g transform="translate(20, 30)" font-family="Orbitron">
+                                    <text x="0" y="0" fill="rgba(255,255,255,0.7)" font-size="9">VELOCIDAD ORBITAL EN VIVO:</text>
+                                    <text x="0" y="18" fill="#bd93f9" font-size="14" font-weight="800" id="sim4-speed-readout">22.4 km/s</text>
+                                    <text x="0" y="38" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Outfit" id="sim4-helper-kepler">Observa los vectores de velocidad (flechas moradas).</text>
+                                </g>
+
+                                <!-- Control animation button -->
+                                <foreignObject x="20" y="330" width="160" height="50">
+                                    <button id="btn-sim4-play" class="btn-primary" style="padding: 8px 16px; font-size: 11px; width: 100%;">REPRODUCIR ÓRBITA</button>
+                                </foreignObject>
+
+                                <defs>
+                                    <radialGradient id="sun-kepler-glow" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" stop-color="#ffffff" />
+                                        <stop offset="35%" stop-color="#d68cff" />
+                                        <stop offset="100%" stop-color="#bd93f9" stop-opacity="0" />
+                                    </radialGradient>
+                            </svg>
+                        </div>
+
+                        <!-- SIMULATOR 5: SPECIAL RELATIVITY (TIME DILATION) -->
+                        <div id="sim-relativity" class="sim-wrapper hidden">
+                            <svg viewBox="0 0 500 400" class="sim-svg">
+                                <!-- Background panel -->
+                                <rect x="15" y="80" width="470" height="230" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" rx="6" />
+                                
+                                <!-- EARTH CLOCK (RELOJ TERRESTRE) -->
+                                <g transform="translate(130, 180)">
+                                    <circle cx="0" cy="0" r="45" fill="#060913" stroke="rgba(255, 59, 48, 0.4)" stroke-width="2.5" />
+                                    <circle cx="0" cy="0" r="4" fill="#ff3b30" />
+                                    <line x1="0" y1="0" x2="0" y2="-32" stroke="#ff3b30" stroke-width="3" stroke-linecap="round" id="sim5-earth-hand" />
+                                    <text x="0" y="65" fill="#ff3b30" font-size="10" font-family="Orbitron" text-anchor="middle">RELOJ TIERRA</text>
+                                </g>
+
+                                <!-- ASTREA CLOCK (RELOJ NAVE) -->
+                                <g transform="translate(370, 180)">
+                                    <circle cx="0" cy="0" r="45" fill="#060913" stroke="rgba(0, 255, 255, 0.4)" stroke-width="2.5" />
+                                    <circle cx="0" cy="0" r="4" fill="#00ffff" />
+                                    <line x1="0" y1="0" x2="0" y2="-32" stroke="#00ffff" stroke-width="3" stroke-linecap="round" id="sim5-ship-hand" />
+                                    <text x="0" y="65" fill="#00ffff" font-size="10" font-family="Orbitron" text-anchor="middle">RELOJ NAVE</text>
+                                </g>
+
+                                <!-- Spaceship flight track -->
+                                <line x1="40" y1="285" x2="460" y2="285" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" stroke-dasharray="4 4" />
+                                
+                                <!-- Relativistic Ship -->
+                                <g id="sim5-ship-group" transform="translate(250, 285)">
+                                    <polygon points="-25,0 -38,-5 -32,0 -38,5" fill="#ff5500" id="sim5-fire" />
+                                    <path d="M-20,-8 L15,-8 L28,0 L15,8 L-20,8 Z" fill="#21262d" stroke="#8b949e" stroke-width="1.5" />
+                                    <circle cx="3" cy="0" r="3.5" fill="#00d2ff" />
+                                </g>
+
+                                <!-- Live Gauges -->
+                                <g transform="translate(20, 30)" font-family="Orbitron">
+                                    <text x="0" y="0" fill="rgba(255,255,255,0.7)" font-size="9">VELOCIDAD EN RELACIÓN A C:</text>
+                                    <text x="0" y="18" fill="#00ffff" font-size="14" font-weight="800" id="sim5-speed-readout">0.0% c</text>
+                                    <text x="230" y="0" fill="rgba(255,255,255,0.7)" font-size="9">FACTOR DE LORENTZ (γ):</text>
+                                    <text x="230" y="18" fill="#39ff14" font-size="14" font-weight="800" id="sim5-lorentz-readout">1.00x</text>
+                                    <text x="0" y="38" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Outfit" id="sim5-time-readout">Dilatación temporal inactiva (1s nave = 1.00s Tierra)</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- CONSOLE FOOTER HUD (PROGRESS STATUS STEPPER) -->
+            <footer class="console-footer">
+                <div class="stepper-label">MÓDULOS CALIBRADOS:</div>
+                <div class="console-stepper">
+                    <div class="step-dot active" id="step-1">1. GRAVEDAD</div>
+                    <div class="step-line" id="line-1"></div>
+                    <div class="step-dot" id="step-2">2. FUERZA</div>
+                    <div class="step-line" id="line-2"></div>
+                    <div class="step-dot" id="step-3">3. FRECUENCIA</div>
+                    <div class="step-line" id="line-3"></div>
+                    <div class="step-dot" id="step-4">4. KEPLER</div>
+                    <div class="step-line" id="line-4"></div>
+                    <div class="step-dot" id="step-5">5. RELATIVIDAD</div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- VICTORY SCREEN OVERLAY -->
+    <section id="win-screen" class="screen">
+        <div class="menu-container win-glow-container">
+            <div class="success-hexagon">✓</div>
+            <h2 class="screen-title success-text">SENSORES CALIBRADOS</h2>
+            <h1 class="victory-headline">¡FÍSICA COMPILADA CON ÉXITO!</h1>
+            
+            <div class="narrative-box">
+                <p class="narrative-text">
+                    La computadora de a bordo de la <span class="highlight">Astraea</span> ha reiniciado sus matrices magnéticas. Los vectores gravitacionales se han alineado, el propulsor ha respondido a la fuerza calculada y las comunicaciones de ondas electromagnéticas están limpias.
+                </p>
+                <p class="narrative-text warning-text">
+                    ¡Has salvado a la tripulación usando ciencia real! Los propulsores warp se han activado a toda potencia.
+                </p>
+            </div>
+
+            <button id="btn-restart-win" class="btn-primary win-btn">
+                <span>INICIAR NUEVO ENTRENAMIENTO</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- JS Scripts -->
+    <script src="audio.js?v=relativity"></script>
+    <script src="puzzles.js?v=relativity"></script>
+    <script src="game.js?v=relativity"></script>
+</body>
+</html>
