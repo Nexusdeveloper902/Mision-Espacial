@@ -41,6 +41,13 @@
     -webkit-user-drag: none;
 }
 
+/* Allow dragging and selection on inputs/interactive controls */
+input, select, textarea, button {
+    user-select: auto;
+    -webkit-user-select: auto;
+    -webkit-user-drag: auto;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -129,7 +136,7 @@ html, body {
 
 .screen.active {
     opacity: 1;
-    pointer-events: all;
+    pointer-events: auto;
     z-index: 2;
 }
 
@@ -505,6 +512,21 @@ html, body {
     transform: scale(1.2);
 }
 
+.glow-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    cursor: pointer;
+    box-shadow: 0 0 8px var(--neon-cyan);
+    transition: transform 0.1s;
+}
+
+.glow-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
+
 /* Kepler point Selector option */
 .points-selector-container {
     display: flex;
@@ -799,6 +821,16 @@ html, body {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
         gap: 8px;
+    }
+
+    .glow-slider::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+    }
+
+    .glow-slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
     }
 }
 
